@@ -1,0 +1,14 @@
+PolymateMini_SSSEP_8ch_ito.mと
+SSSEP_main_ito.m
+について
+
+C:\Users\norifumi\Documents\MATLAB\shimada
+から
+
+PolymateMini_SSSEP_8ch_exam_EX2.mと
+SSSEP_main.m
+をもらって少し修正しました。
+
+島田さんの二つのプログラムは、
+8chのフォトディテクタの信号をグラフでリアルタイムに表示する点などが他のものと違うようです。
+詳しくはメモを参照。
