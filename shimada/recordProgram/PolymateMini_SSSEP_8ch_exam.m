@@ -20,6 +20,8 @@ CH_NAME = {'FpZ' 'FC3' 'FCz' 'FC4' 'O1' 'O2' 'EX1' 'EX2'};
 RECORD_TIME=rectime*60+20; %計測時間 60分 %30分にする。(途中でやめることも可)
 GAIN=100;
  
+% `Sony Walkman + Elecom イヤホン`を脳波計の「「「EX1」」」(エクスターナル1)にセット
+%  - 40Hz音(to 被験者) + 1s毎のクリック音(to EEG)
 
 % Polymate Mini Init
 fprintf('[Init]');
@@ -140,7 +142,8 @@ while 1
         ylabel('uV');
         legend(CH_NAME(EEG_CH));%[EEG_CH EOG_CH]
         
-        % EX1の表示
+        % EX1の表示。これが１秒ごとに反応していたら、wolkmanが正しく接続されているということになる
+        % これを何に使うのかはしらん
         figure(fig1);subplot(3,2,4)
         plot(rawdata2s(:,TRG_CH))
         axis([0 1500 -10^4 0])
