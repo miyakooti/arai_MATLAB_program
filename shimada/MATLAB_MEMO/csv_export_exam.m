@@ -1,13 +1,14 @@
-%% CSVå‡ºåŠ›æ–¹æ³•ãƒ¡ãƒ¢
+%% CSVo—Í•û–@ƒƒ‚
 
-% ä½•ã‚‰ã‹ã®ãƒ‡ãƒ¼ã‚¿ã‚’ãƒ­ãƒ¼ãƒ‰ã™ã‚‹
+% ‰½‚ç‚©‚Ìƒf[ƒ^‚ğƒ[ƒh‚·‚é
 task = normalize_mean(:,:);
 task2 = normalize_FC3(:,:);
 
-% CSVå‡ºåŠ›ãƒ—ãƒ­ã‚°ãƒ©ãƒ 
-% num2cell()ã«ã‚ˆã‚Šã€é…åˆ—ãƒ‡ãƒ¼ã‚¿ã‚’cellé…åˆ—ã«å¤‰æ›ã§ãã‚‹
+% CSVo—ÍƒvƒƒOƒ‰ƒ€
+
+% num2cell()‚É‚æ‚èA”z—ñƒf[ƒ^‚ğcell”z—ñ‚É•ÏŠ·‚Å‚«‚é
 Vname = {'Mean','FC3'};
 data = [num2cell(task), num2cell(task2)];
 C = [Vname;data];
 
-writecell(C,'mydata1.csv')% å‡ºåŠ›
+writecell(C,'mydata1.csv')% o—Í
