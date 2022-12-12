@@ -1,4 +1,4 @@
-function [rawdata] = PolymateMini_SSSEP_8ch_enoki(subject, condition, rectime)
+function [rawdata] = PolymateMini_SSSEP_8ch_arai(subject, condition, rectime)
 % subject: 被験者名
 % condition: 実験条件名
 nowtime = datestr(now, 30); % 保存ファイル名用に現時間を取得
