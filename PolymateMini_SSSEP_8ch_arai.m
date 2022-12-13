@@ -1,24 +1,24 @@
 function [rawdata] = PolymateMini_SSSEP_8ch_arai(subject, condition, rectime)
-% subject: ”íŒ±Ò–¼
-% condition: ÀŒ±ğŒ–¼
-nowtime = datestr(now, 30); % •Û‘¶ƒtƒ@ƒCƒ‹–¼—p‚ÉŒ»ŠÔ‚ğæ“¾
+% subject: è¢«é¨“è€…å
+% condition: å®Ÿé¨“æ¡ä»¶å
+nowtime = datestr(now, 30); % ä¿å­˜ãƒ•ã‚¡ã‚¤ãƒ«åç”¨ã«ç¾æ™‚é–“ã‚’å–å¾—
 
-% OS‚Å‹¤’Ê‚ÌƒL[”z’u‚É‚·‚é
+% OSã§å…±é€šã®ã‚­ãƒ¼é…ç½®ã«ã™ã‚‹
 myKeyCheck;
 %:l
 MEL_CTRL;
-MEL_SAMPLE_COMPORT	= 'COM6'; % COMƒ|[ƒg”Ô†
+MEL_SAMPLE_COMPORT	= 'COM6'; % COMãƒãƒ¼ãƒˆç•ªå·
 MEL_SAMPLE_UNITSIZE	= 1;
-MEL_SAMPLE_UNIT_N	= 10000; %SIZE 1 ‚ÌUNIT‚ğ 10000ŒÂŠm•Û ¨ 10000/ 1000Hz =10•b•ª
-MEL_SAMPLE_FREQ		= 500; %ƒTƒ“ƒvƒŠƒ“ƒOü”g”
-% MEL_SAMPLE_LIST_CH = [MELCTRL_DEVTYPE_EEG+1 MELCTRL_DEVTYPE_EEG+2 MELCTRL_DEVTYPE_EEG+3 MELCTRL_DEVTYPE_EEG+4 MELCTRL_DEVTYPE_EEG+5 MELCTRL_DEVTYPE_EEG+6 MELCTRL_DEVTYPE_EEG+7 MELCTRL_DEVTYPE_EEG+8 MELCTRL_DEVTYPE_EXT+1 MELCTRL_DEVTYPE_EXT+2]; % EEG 5ƒ`ƒƒƒlƒ‹+EXT 1
+MEL_SAMPLE_UNIT_N	= 10000; %SIZE 1 ã®UNITã‚’ 10000å€‹ç¢ºä¿ â†’ 10000/ 1000Hz =10ç§’åˆ†
+MEL_SAMPLE_FREQ		= 500; %ã‚µãƒ³ãƒ—ãƒªãƒ³ã‚°å‘¨æ³¢æ•°
+% MEL_SAMPLE_LIST_CH = [MELCTRL_DEVTYPE_EEG+1 MELCTRL_DEVTYPE_EEG+2 MELCTRL_DEVTYPE_EEG+3 MELCTRL_DEVTYPE_EEG+4 MELCTRL_DEVTYPE_EEG+5 MELCTRL_DEVTYPE_EEG+6 MELCTRL_DEVTYPE_EEG+7 MELCTRL_DEVTYPE_EEG+8 MELCTRL_DEVTYPE_EXT+1 MELCTRL_DEVTYPE_EXT+2]; % EEG 5ãƒãƒ£ãƒãƒ«+EXT 1
 MEL_SAMPLE_LIST_CH = [
     MELCTRL_DEVTYPE_EEG+1 MELCTRL_DEVTYPE_EEG+2 MELCTRL_DEVTYPE_EEG+3 ...
     MELCTRL_DEVTYPE_EEG+4 MELCTRL_DEVTYPE_EEG+5 MELCTRL_DEVTYPE_EEG+6 ...
-    MELCTRL_DEVTYPE_EEG+7 MELCTRL_DEVTYPE_ECG+8 ...
-    MELCTRL_DEVTYPE_EXT+1 MELCTRL_DEVTYPE_EXT+2];   % ƒ`ƒƒƒ“ƒlƒ‹‚Ìİ’èB‚±‚±‚ÅECG‚É‚·‚ê‚Î‚¢‚¢‚©‚àH
+    MELCTRL_DEVTYPE_EEG+7 MELCTRL_DEVTYPE_EEG+8 ...
+    MELCTRL_DEVTYPE_EXT+1 MELCTRL_DEVTYPE_EXT+2];   % ãƒãƒ£ãƒ³ãƒãƒ«ã®è¨­å®šã€‚ã“ã“ã§ECGã«ã™ã‚Œã°ã„ã„ã‹ã‚‚ï¼Ÿ
 CH_NAME = {'FC3' 'FCz ' 'FC4' 'F3' 'FZ' 'F4' 'F10' 'V2' 'EX1' 'EX2'};
-RECORD_TIME=rectime*60+20; %Œv‘ªŠÔ 60•ª %30•ª‚É‚·‚éB(“r’†‚Å‚â‚ß‚é‚±‚Æ‚à‰Â)
+RECORD_TIME=rectime*60+20; %è¨ˆæ¸¬æ™‚é–“ 60åˆ† %30åˆ†ã«ã™ã‚‹ã€‚(é€”ä¸­ã§ã‚„ã‚ã‚‹ã“ã¨ã‚‚å¯)
 GAIN=100;
  
 
@@ -46,20 +46,20 @@ fprintf(' HANDLE: %d\n', HANDLE);
 % try
 fprintf('[SetCh]');
 CH_N = size(MEL_SAMPLE_LIST_CH, 2);
-ret = mel4mex('SetCh', HANDLE, CH_N, MEL_SAMPLE_LIST_CH); % ƒ`ƒƒƒlƒ‹ƒZƒbƒg
+ret = mel4mex('SetCh', HANDLE, CH_N, MEL_SAMPLE_LIST_CH); % ãƒãƒ£ãƒãƒ«ã‚»ãƒƒãƒˆ
 
-EEG_CH = 1:7;% Œv‘ª‚·‚éƒ`ƒƒƒ“ƒlƒ‹”•ª‚É•ÏX
+EEG_CH = 1:7;% è¨ˆæ¸¬ã™ã‚‹ãƒãƒ£ãƒ³ãƒãƒ«æ•°åˆ†ã«å¤‰æ›´
 ECG_CH = 8;
-% EOG_CH = 7:8;% ‚¨‚»‚ç‚­g‚í‚È‚¢ƒ`ƒƒƒ“ƒlƒ‹‚ğ‚±‚±‚É‹L“ü‚·‚é
-TRG_CH = CH_N-1;% ‹°‚ç‚­‚±‚ê‚ÍEX1 % ƒgƒŠƒK[ƒ`ƒƒƒ“ƒlƒ‹ (‚±‚ê‚ğ“ñ‚Âì‚é?)
-TRG_CH2 = CH_N; % EX2‚ğì‚é => ‰º‚Ìfigure()‚Å•\¦‚³‚ê‚é‚æ‚¤‚É‘‚­
+% EOG_CH = 7:8;% ãŠãã‚‰ãä½¿ã‚ãªã„ãƒãƒ£ãƒ³ãƒãƒ«ã‚’ã“ã“ã«è¨˜å…¥ã™ã‚‹
+TRG_CH = CH_N-1;% æã‚‰ãã“ã‚Œã¯EX1 % ãƒˆãƒªã‚¬ãƒ¼ãƒãƒ£ãƒ³ãƒãƒ« (ã“ã‚Œã‚’äºŒã¤ä½œã‚‹?)
+TRG_CH2 = CH_N; % EX2ã‚’ä½œã‚‹ => ä¸‹ã®figure()ã§è¡¨ç¤ºã•ã‚Œã‚‹ã‚ˆã†ã«æ›¸ã
 
-% i = 1;CH_N-2 => EX1, EX2‚ğœ‚¢‚½”gŒ`‚ğ•\‚µ‚Ä‚¢‚é?
+% i = 1;CH_N-2 => EX1, EX2ã‚’é™¤ã„ãŸæ³¢å½¢ã‚’è¡¨ã—ã¦ã„ã‚‹?
 for i=1:CH_N-2
     ret = mel4mex('SetChInfo', HANDLE, i, MELCTRL_CH_GAIN, GAIN);
 end
 
-[result info]=mel4mex('GetChInfo', HANDLE, 1, MELCTRL_CH_GAIN); % ƒ`ƒƒƒlƒ‹ƒZƒbƒg
+[result info]=mel4mex('GetChInfo', HANDLE, 1, MELCTRL_CH_GAIN); % ãƒãƒ£ãƒãƒ«ã‚»ãƒƒãƒˆ
 
 if ret == 0
     fprintf(' NG\n');
@@ -72,7 +72,7 @@ else
     fprintf(' OK\n');
 end
 
-% ƒCƒ“ƒs[ƒ_ƒ“ƒXŒv‘ª
+% ã‚¤ãƒ³ãƒ”ãƒ¼ãƒ€ãƒ³ã‚¹è¨ˆæ¸¬
     fprintf('[GetImpedance]');
     IMPD = mel4mex('GetImpedance', HANDLE);
     if IMPD == 0
@@ -81,7 +81,7 @@ end
         fprintf(' OK\n');
         fprintf(' Impedance:');
         for itemImpd = IMPD
-            fprintf(' %5f [k ohm]', itemImpd*0.001); %ƒLƒƒI[ƒ€’PˆÊ‚Å•\¦
+            fprintf(' %5f [k ohm]', itemImpd*0.001); %ã‚­ãƒ­ã‚ªãƒ¼ãƒ å˜ä½ã§è¡¨ç¤º
         end
         fprintf('\n');
     end
@@ -92,23 +92,23 @@ fprintf('[Acquision] Start...\n');
 
 
 % for EEG
-% [B1,A1] = butter(5,[5/(MEL_SAMPLE_FREQ/2) 50/(MEL_SAMPLE_FREQ/2)]); %ƒtƒBƒ‹ƒ^İŒv 5-50Hz
-% [B2,A2] = butter(5,[5/(MEL_SAMPLE_FREQ/2) 30/(MEL_SAMPLE_FREQ/2)]); %ƒtƒBƒ‹ƒ^İŒv 5-30Hz
-% Zf1 = [];
-% Zf2 = [];
-% data1 = [];
-% data2 = [];
-% rawdata=[];
+[B1,A1] = butter(5,[5/(MEL_SAMPLE_FREQ/2) 50/(MEL_SAMPLE_FREQ/2)]); %ãƒ•ã‚£ãƒ«ã‚¿è¨­è¨ˆ 5-50Hz
+[B2,A2] = butter(5,[5/(MEL_SAMPLE_FREQ/2) 30/(MEL_SAMPLE_FREQ/2)]); %ãƒ•ã‚£ãƒ«ã‚¿è¨­è¨ˆ 5-30Hz
+Zf1 = [];
+Zf2 = [];
+data1 = [];
+data2 = [];
+rawdata=[];
 
 % for ECG
-[B1,A1] = butter(0.15,[0.15/(MEL_SAMPLE_FREQ/2) 60/(MEL_SAMPLE_FREQ/2)]); %ƒtƒBƒ‹ƒ^İŒv 0.15-60Hz
+[B2,A2] = butter(1,[1/(MEL_SAMPLE_FREQ/2) 60/(MEL_SAMPLE_FREQ/2)]); %ãƒ•ã‚£ãƒ«ã‚¿è¨­è¨ˆ 0.15-60Hz
 Zf1 = [];
 data1 = [];
 rawdata=[];
 
 % for ECG 2
-% [B1_ECG,A1_ECG] = butter(5,[5/(MEL_SAMPLE_FREQ/2) 50/(MEL_SAMPLE_FREQ/2)]); %ƒtƒBƒ‹ƒ^İŒv 5-50Hz
-% [B2_ECG,A2_ECG] = butter(5,[5/(MEL_SAMPLE_FREQ/2) 30/(MEL_SAMPLE_FREQ/2)]); %ƒtƒBƒ‹ƒ^İŒv 5-30Hz
+% [B1_ECG,A1_ECG] = butter(5,[5/(MEL_SAMPLE_FREQ/2) 50/(MEL_SAMPLE_FREQ/2)]); %ãƒ•ã‚£ãƒ«ã‚¿è¨­è¨ˆ 5-50Hz
+% [B2_ECG,A2_ECG] = butter(5,[5/(MEL_SAMPLE_FREQ/2) 30/(MEL_SAMPLE_FREQ/2)]); %ãƒ•ã‚£ãƒ«ã‚¿è¨­è¨ˆ 5-30Hz
 % Zf1_ECG = [];
 % Zf2_ECG = [];
 % data1_ECG = [];
@@ -119,9 +119,9 @@ rawdata=[];
 loop_cnt=1;
 grandepoch=[];
 
-ch_combi = nchoosek(1:CH_N-3,2);%%sample‚É‚Í‚±‚Ìs‚ª‚È‚¢%%
+ch_combi = nchoosek(1:CH_N-3,2);%%sampleã«ã¯ã“ã®è¡ŒãŒãªã„%%
 
-mel4mex('StartAcquision', HANDLE); % Œv‘ªŠJn
+mel4mex('StartAcquision', HANDLE); % è¨ˆæ¸¬é–‹å§‹
 pause(5)
 
 tic
@@ -129,8 +129,8 @@ scrcz = get(groot, 'ScreenSize');
 fig1=figure('Position', [scrcz(3)/2 50 scrcz(3)/3 scrcz(4)-130]);
 
 disp('Hold down Esc key to stop ASSR recording >');
-reference_time = datetime('now', 'Format', 'dd-MMM-yyyy HH:mm:ss.SSS');% ˆê‰æ“¾‚µ‚Ä‚¨‚­
-% ŠÔæ“¾—p”z—ñ
+reference_time = datetime('now', 'Format', 'dd-MMM-yyyy HH:mm:ss.SSS');% ä¸€å¿œå–å¾—ã—ã¦ãŠã
+% æ™‚é–“å–å¾—ç”¨é…åˆ—
 first_time = [];
 %tttime = [];
 flug = 0;
@@ -138,32 +138,32 @@ flug = 0;
 while 1
    escKey = KbName('Escape');           
    [keyIsDown, secs, keyCode] = KbCheck;
-    if (toc > RECORD_TIME) | keyCode(escKey)    % RECORD_TIME‚ğ’´‚¦‚é‚©EscƒL[‚ª‰Ÿ‚³‚ê‚½‚çŒv‘ªI—¹
+    if (toc > RECORD_TIME) | keyCode(escKey)    % RECORD_TIMEã‚’è¶…ãˆã‚‹ã‹Escã‚­ãƒ¼ãŒæŠ¼ã•ã‚ŒãŸã‚‰è¨ˆæ¸¬çµ‚äº†
         break;
     end
-    pause(1) %1•b‚²‚Æ‚Éƒf[ƒ^‰ğÍ
+    pause(1) %1ç§’ã”ã¨ã«ãƒ‡ãƒ¼ã‚¿è§£æ
     %tttime = [tttime datetime('now', 'Format', 'dd-MMM-yyyy HH:mm:ss.SSS')];
-    UNIT_N = mel4mex('CheckAcqUnitN', HANDLE); %Œv‘ªƒf[ƒ^ƒ`ƒFƒbƒN
-    if UNIT_N > 0 % V‹KŠl“¾ƒf[ƒ^‚Ì—L–³
+    UNIT_N = mel4mex('CheckAcqUnitN', HANDLE); %è¨ˆæ¸¬ãƒ‡ãƒ¼ã‚¿ãƒã‚§ãƒƒã‚¯
+    if UNIT_N > 0 % æ–°è¦ç²å¾—ãƒ‡ãƒ¼ã‚¿ã®æœ‰ç„¡
         if flug == 0
             first_time = [first_time datetime('now', 'Format', 'dd-MMM-yyyy HH:mm:ss.SSS')];
-            flug = flug + 1;% ‚à‚¤“ü‚ç‚È‚¢‚æ‚¤‚Éƒtƒ‰ƒO‚ğXV
+            flug = flug + 1;% ã‚‚ã†å…¥ã‚‰ãªã„ã‚ˆã†ã«ãƒ•ãƒ©ã‚°ã‚’æ›´æ–°
         end
-        tempdata = mel4mex('ReadAcqDataN', HANDLE, UNIT_N)/GAIN*(6/2^16)*10^6; %ƒ}ƒCƒNƒƒ{ƒ‹ƒg‚É•ÏŠ·
+        tempdata = mel4mex('ReadAcqDataN', HANDLE, UNIT_N)/GAIN*(6/2^16)*10^6; %ãƒã‚¤ã‚¯ãƒ­ãƒœãƒ«ãƒˆã«å¤‰æ›
         
-%         [tempdata1,Zf1] = filter(B1, A1, tempdata',Zf1); %ƒtƒBƒ‹ƒ^“K—p 5-50Hz
-%         [tempdata2,Zf2] = filter(B2, A2, tempdata',Zf2); %ƒtƒBƒ‹ƒ^“K—p 5-30Hz
-%         data1 = [data1;tempdata1]; %ƒtƒBƒ‹ƒ^(5-50Hz)‚Ìƒf[ƒ^˜AŒ‹
-%         data2 = [data2;tempdata2]; %ƒtƒBƒ‹ƒ^(5-30Hz)‚Ìƒf[ƒ^˜AŒ‹
+%         [tempdata1,Zf1] = filter(B1, A1, tempdata',Zf1); %ãƒ•ã‚£ãƒ«ã‚¿é©ç”¨ 5-50Hz
+%         [tempdata2,Zf2] = filter(B2, A2, tempdata',Zf2); %ãƒ•ã‚£ãƒ«ã‚¿é©ç”¨ 5-30Hz
+%         data1 = [data1;tempdata1]; %ãƒ•ã‚£ãƒ«ã‚¿(5-50Hz)ã®ãƒ‡ãƒ¼ã‚¿é€£çµ
+%         data2 = [data2;tempdata2]; %ãƒ•ã‚£ãƒ«ã‚¿(5-30Hz)ã®ãƒ‡ãƒ¼ã‚¿é€£çµ
 %         rawdata=[rawdata; tempdata'];
-%         data3 = data1(end-3*MEL_SAMPLE_FREQ+1:end,:); %data1‚ÌÅVƒf[ƒ^ 3•b•ª‚Ìƒf[ƒ^’Šo
-%         data4 = data2(end-3*MEL_SAMPLE_FREQ+1:end,:); %data2‚ÌÅVƒf[ƒ^ 3•b•ª‚Ìƒf[ƒ^’Šo
+%         data3 = data1(end-3*MEL_SAMPLE_FREQ+1:end,:); %data1ã®æœ€æ–°ãƒ‡ãƒ¼ã‚¿ 3ç§’åˆ†ã®ãƒ‡ãƒ¼ã‚¿æŠ½å‡º
+%         data4 = data2(end-3*MEL_SAMPLE_FREQ+1:end,:); %data2ã®æœ€æ–°ãƒ‡ãƒ¼ã‚¿ 3ç§’åˆ†ã®ãƒ‡ãƒ¼ã‚¿æŠ½å‡º
 %         
-%         rawdata2s=rawdata(end-3*MEL_SAMPLE_FREQ+1:end,:); %rawdata‚ÌÅVƒf[ƒ^ 3•b•ª‚Ìƒf[ƒ^’Šo
+%         rawdata2s=rawdata(end-3*MEL_SAMPLE_FREQ+1:end,:); %rawdataã®æœ€æ–°ãƒ‡ãƒ¼ã‚¿ 3ç§’åˆ†ã®ãƒ‡ãƒ¼ã‚¿æŠ½å‡º
 
         
 %          figure(fig1);subplot(3,1,1)
-%          plot([1:MEL_SAMPLE_FREQ*3]/MEL_SAMPLE_FREQ,data4(:,EEG_CH)); % ƒvƒƒbƒg [EEG_CH EOG_CH]
+%          plot([1:MEL_SAMPLE_FREQ*3]/MEL_SAMPLE_FREQ,data4(:,EEG_CH)); % ãƒ—ãƒ­ãƒƒãƒˆ [EEG_CH EOG_CH]
 %          axis([1/MEL_SAMPLE_FREQ MEL_SAMPLE_FREQ*3/MEL_SAMPLE_FREQ -50 50])
 %          title(['EEG, ' num2str(toc) 'sec']);
 %          xlabel('time (s)');
@@ -172,16 +172,16 @@ while 1
          
 
 % for ECG 1
-        [tempdata2,Zf2] = filter(B2, A2, tempdata',Zf2); %ƒtƒBƒ‹ƒ^“K—p 5-30Hz
-        data2 = [data2;tempdata2]; %ƒtƒBƒ‹ƒ^(0.15-60Hz)‚Ìƒf[ƒ^˜AŒ‹
+        [tempdata2,Zf2] = filter(B2, A2, tempdata',Zf2); %ãƒ•ã‚£ãƒ«ã‚¿é©ç”¨ 5-30Hz
+        data2 = [data2;tempdata2]; %ãƒ•ã‚£ãƒ«ã‚¿(0.15-60Hz)ã®ãƒ‡ãƒ¼ã‚¿é€£çµ
         rawdata=[rawdata; tempdata'];
-        data4 = data2(end-3*MEL_SAMPLE_FREQ+1:end,:); %data2‚ÌÅVƒf[ƒ^ 3•b•ª‚Ìƒf[ƒ^’Šo
+        data4 = data2(end-3*MEL_SAMPLE_FREQ+1:end,:); %data2ã®æœ€æ–°ãƒ‡ãƒ¼ã‚¿ 3ç§’åˆ†ã®ãƒ‡ãƒ¼ã‚¿æŠ½å‡º
         
-        rawdata2s=rawdata(end-3*MEL_SAMPLE_FREQ+1:end,:); %rawdata‚ÌÅVƒf[ƒ^ 3•b•ª‚Ìƒf[ƒ^’Šo
+        rawdata2s=rawdata(end-3*MEL_SAMPLE_FREQ+1:end,:); %rawdataã®æœ€æ–°ãƒ‡ãƒ¼ã‚¿ 3ç§’åˆ†ã®ãƒ‡ãƒ¼ã‚¿æŠ½å‡º
 
          figure(fig1);subplot(3,1,1)
-         plot([1:MEL_SAMPLE_FREQ*3]/MEL_SAMPLE_FREQ,data4(:,ECG_CH)); % ƒvƒƒbƒg [EEG_CH EOG_CH]
-         axis([1/MEL_SAMPLE_FREQ MEL_SAMPLE_FREQ*3/MEL_SAMPLE_FREQ -100 100])
+         plot([1:MEL_SAMPLE_FREQ*3]/MEL_SAMPLE_FREQ,data4(:,ECG_CH)); % ãƒ—ãƒ­ãƒƒãƒˆ [EEG_CH EOG_CH]
+         axis([1/MEL_SAMPLE_FREQ MEL_SAMPLE_FREQ*3/MEL_SAMPLE_FREQ -1000 1000])
          title(['ECG, ' num2str(toc) 'sec']);
          xlabel('time (s)');
          ylabel('uV');
@@ -190,33 +190,33 @@ while 1
 
 % for ECG 2
         
-%         [tempdata1_ECG,Zf1_ECG] = filter(B1_ECG, A1_ECG, tempdata',Zf1_ECG); %ƒtƒBƒ‹ƒ^“K—p 5-50Hz
-%         [tempdata2_ECG,Zf2_ECG] = filter(B2_ECG, A2_ECG, tempdata',Zf2_ECG); %ƒtƒBƒ‹ƒ^“K—p 5-30Hz
-%         data1_ECG = [data1_ECG;tempdata1_ECG]; %ƒtƒBƒ‹ƒ^(5-50Hz)‚Ìƒf[ƒ^˜AŒ‹
-%         data2_ECG = [data2_ECG;tempdata2_ECG]; %ƒtƒBƒ‹ƒ^(5-30Hz)‚Ìƒf[ƒ^˜AŒ‹
+%         [tempdata1_ECG,Zf1_ECG] = filter(B1_ECG, A1_ECG, tempdata',Zf1_ECG); %ãƒ•ã‚£ãƒ«ã‚¿é©ç”¨ 5-50Hz
+%         [tempdata2_ECG,Zf2_ECG] = filter(B2_ECG, A2_ECG, tempdata',Zf2_ECG); %ãƒ•ã‚£ãƒ«ã‚¿é©ç”¨ 5-30Hz
+%         data1_ECG = [data1_ECG;tempdata1_ECG]; %ãƒ•ã‚£ãƒ«ã‚¿(5-50Hz)ã®ãƒ‡ãƒ¼ã‚¿é€£çµ
+%         data2_ECG = [data2_ECG;tempdata2_ECG]; %ãƒ•ã‚£ãƒ«ã‚¿(5-30Hz)ã®ãƒ‡ãƒ¼ã‚¿é€£çµ
 %         rawdata_ECG=[rawdata_ECG; tempdata'];
-%         data3_ECG = data1_ECG(end-3*MEL_SAMPLE_FREQ+1:end,:); %data1‚ÌÅVƒf[ƒ^ 3•b•ª‚Ìƒf[ƒ^’Šo
-%         data4_ECG = data2_ECG(end-3*MEL_SAMPLE_FREQ+1:end,:); %data2‚ÌÅVƒf[ƒ^ 3•b•ª‚Ìƒf[ƒ^’Šo
+%         data3_ECG = data1_ECG(end-3*MEL_SAMPLE_FREQ+1:end,:); %data1ã®æœ€æ–°ãƒ‡ãƒ¼ã‚¿ 3ç§’åˆ†ã®ãƒ‡ãƒ¼ã‚¿æŠ½å‡º
+%         data4_ECG = data2_ECG(end-3*MEL_SAMPLE_FREQ+1:end,:); %data2ã®æœ€æ–°ãƒ‡ãƒ¼ã‚¿ 3ç§’åˆ†ã®ãƒ‡ãƒ¼ã‚¿æŠ½å‡º
 %         
-%         rawdata2s_ECG=rawdata_ECG(end-3*MEL_SAMPLE_FREQ+1:end,:); %rawdata‚ÌÅVƒf[ƒ^ 3•b•ª‚Ìƒf[ƒ^’Šo
+%         rawdata2s_ECG=rawdata_ECG(end-3*MEL_SAMPLE_FREQ+1:end,:); %rawdataã®æœ€æ–°ãƒ‡ãƒ¼ã‚¿ 3ç§’åˆ†ã®ãƒ‡ãƒ¼ã‚¿æŠ½å‡º
 % 
 %         figure(fig1);subplot(3,1,1)
-%         plot([1:MEL_SAMPLE_FREQ*3]/MEL_SAMPLE_FREQ,data4_ECG(:,ECG_CH)); % ƒvƒƒbƒg [EEG_CH EOG_CH]
+%         plot([1:MEL_SAMPLE_FREQ*3]/MEL_SAMPLE_FREQ,data4_ECG(:,ECG_CH)); % ãƒ—ãƒ­ãƒƒãƒˆ [EEG_CH EOG_CH]
 %         axis([1/MEL_SAMPLE_FREQ MEL_SAMPLE_FREQ*3/MEL_SAMPLE_FREQ -1000 1000])
-%         title(['S“d}, ' num2str(toc) 'sec']);
+%         title(['å¿ƒé›»å›³, ' num2str(toc) 'sec']);
 %         xlabel('time (s)');
 %         ylabel('uV');
 %         legend(CH_NAME(ECG_CH));%[EEG_CH EOG_CH]
         
-        % EX1‚Ì•\¦
+        % EX1ã®è¡¨ç¤º
         figure(fig1);subplot(3,2,4)
         plot(rawdata2s(:,TRG_CH))
         %axis([0 1500 -10^4 0])
         axis([0 1500 -10^4 10^4])
         title('TRG');
         
-        % EX2‚Ì•\¦ %% coded by shimada
-        figure(fig1);subplot(3,3,4)% ‚ ‚é‚¢‚ÍAsubplot(3, 2, 1)‚Æ‚©‚Å‚à—Ç‚¢‚©‚à
+        % EX2ã®è¡¨ç¤º %% coded by shimada
+        figure(fig1);subplot(3,3,4)% ã‚ã‚‹ã„ã¯ã€subplot(3, 2, 1)ã¨ã‹ã§ã‚‚è‰¯ã„ã‹ã‚‚
         plot(rawdata2s(:,TRG_CH2))
         axis([0 1500 -10^4 10^4])
         title('PhotoDct');
@@ -239,7 +239,7 @@ while 1
 
             if( size(epoched_data,1) == MEL_SAMPLE_FREQ*2 )
                 
-                %ƒt[ƒŠƒG•ÏŠ·
+                %ãƒ•ãƒ¼ãƒªã‚¨å¤‰æ›
                 Y = fft(epoched_data);
                 FT(:,:,loop_cnt)=Y;
                 P(:,:,loop_cnt)= sqrt(Y.*conj(Y));
@@ -257,7 +257,7 @@ while 1
                 len =length(epoched_data);
                 f=MEL_SAMPLE_FREQ/2*linspace(0,1,len/2+1);
                 
-                %ƒVƒ“ƒOƒ‹ƒgƒ‰ƒCƒAƒ‹ƒt[ƒŠƒG•ÏŠ·Œ‹‰Ê
+                %ã‚·ãƒ³ã‚°ãƒ«ãƒˆãƒ©ã‚¤ã‚¢ãƒ«ãƒ•ãƒ¼ãƒªã‚¨å¤‰æ›çµæœ
                 figure(fig1);subplot(3,2,3)
                 plot(f(21:91),P(21:91,:,loop_cnt));
                 title('Fourier transform');
@@ -279,7 +279,7 @@ while 1
 %                             ./ abs(squeeze(FT_mov(:,ch_combi(i_combi,1),:))) ./ abs(squeeze(FT_mov(:,ch_combi(i_combi,2),:))),2));
 %                     end
                                                             
-                    %‰ÁZ•½‹Ïƒt[ƒŠƒG•ÏŠ·Œ‹‰Ê
+                    %åŠ ç®—å¹³å‡ãƒ•ãƒ¼ãƒªã‚¨å¤‰æ›çµæœ
                     figure(fig1);subplot(3,2,5); plot(f(21:91),ITPC(21:91,:));
                     title(['PLI ' num2str(round(toc))]);xlabel('Hz');ylabel('PLI');legend(CH_NAME(EEG_CH));
                     
@@ -303,7 +303,7 @@ while 1
 end
 
 toc
-mel4mex('StopAcquision', HANDLE); % Œv‘ªI—¹
+mel4mex('StopAcquision', HANDLE); % è¨ˆæ¸¬çµ‚äº†
 
 % Polymate Mini Close
 fprintf('[Close]\n');
@@ -315,7 +315,7 @@ close all
 save(['data/SSSEP_' nowtime '_' subject '_' condition '.mat'])
 % save(['data/rest_' nowtime '_' subject '.mat'])
 
-% ƒXƒ^[ƒg•\¦
+% ã‚¹ã‚¿ãƒ¼ãƒˆæ™‚åˆ»è¡¨ç¤º
 disp(reference_time(1,1));
 
 end
