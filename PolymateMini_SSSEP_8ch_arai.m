@@ -15,9 +15,9 @@ MEL_SAMPLE_FREQ		= 500; %サンプリング周波数
 MEL_SAMPLE_LIST_CH = [
     MELCTRL_DEVTYPE_EEG+1 MELCTRL_DEVTYPE_EEG+2 MELCTRL_DEVTYPE_EEG+3 ...
     MELCTRL_DEVTYPE_EEG+4 MELCTRL_DEVTYPE_EEG+5 MELCTRL_DEVTYPE_EEG+6 ...
-    MELCTRL_DEVTYPE_EEG+7 MELCTRL_DEVTYPE_EEG+8 ...
-    MELCTRL_DEVTYPE_EXT+1 MELCTRL_DEVTYPE_EXT+2];   % チャンネルの設定
-CH_NAME = {'FC3' 'FCz ' 'FC4' 'F3' 'FZ' 'F4' 'F10' 'Fp2' 'EX1' 'EX2'};
+    MELCTRL_DEVTYPE_EEG+7 MELCTRL_DEVTYPE_ECG+8 ...
+    MELCTRL_DEVTYPE_EXT+1 MELCTRL_DEVTYPE_EXT+2];   % チャンネルの設定。ここでECGにすればいいかも？
+CH_NAME = {'FC3' 'FCz ' 'FC4' 'F3' 'FZ' 'F4' 'F10' 'V2' 'EX1' 'EX2'};
 RECORD_TIME=rectime*60+20; %計測時間 60分 %30分にする。(途中でやめることも可)
 GAIN=100;
  
@@ -48,7 +48,8 @@ fprintf('[SetCh]');
 CH_N = size(MEL_SAMPLE_LIST_CH, 2);
 ret = mel4mex('SetCh', HANDLE, CH_N, MEL_SAMPLE_LIST_CH); % チャネルセット
 
-EEG_CH = 1:8;% 計測するチャンネル数分に変更
+EEG_CH = 1:7;% 計測するチャンネル数分に変更
+ECG_CH = 8;
 % EOG_CH = 7:8;% おそらく使わないチャンネルをここに記入する
 TRG_CH = CH_N-1;% 恐らくこれはEX1 % トリガーチャンネル (これを二つ作る?)
 TRG_CH2 = CH_N; % EX2を作る => 下のfigure()で表示されるように書く
@@ -141,13 +142,21 @@ while 1
         rawdata2s=rawdata(end-3*MEL_SAMPLE_FREQ+1:end,:); %rawdataの最新データ 3秒分のデータ抽出
 
         
+%         figure(fig1);subplot(3,1,1)
+%         plot([1:MEL_SAMPLE_FREQ*3]/MEL_SAMPLE_FREQ,data4(:,EEG_CH)); % プロット [EEG_CH EOG_CH]
+%         axis([1/MEL_SAMPLE_FREQ MEL_SAMPLE_FREQ*3/MEL_SAMPLE_FREQ -50 50])
+%         title(['EEG, ' num2str(toc) 'sec']);
+%         xlabel('time (s)');
+%         ylabel('uV');
+%         legend(CH_NAME(EEG_CH));%[EEG_CH EOG_CH]
+        
         figure(fig1);subplot(3,1,1)
-        plot([1:MEL_SAMPLE_FREQ*3]/MEL_SAMPLE_FREQ,data4(:,EEG_CH)); % プロット [EEG_CH EOG_CH]
+        plot([1:MEL_SAMPLE_FREQ*3]/MEL_SAMPLE_FREQ,data4(:,ECG_CH)); % プロット [EEG_CH EOG_CH]
         axis([1/MEL_SAMPLE_FREQ MEL_SAMPLE_FREQ*3/MEL_SAMPLE_FREQ -50 50])
-        title(['EEG, ' num2str(toc) 'sec']);
+        title(['心電図, ' num2str(toc) 'sec']);
         xlabel('time (s)');
         ylabel('uV');
-        legend(CH_NAME(EEG_CH));%[EEG_CH EOG_CH]
+        legend(CH_NAME(ECG_CH));%[EEG_CH EOG_CH]
         
         % EX1の表示
         figure(fig1);subplot(3,2,4)
