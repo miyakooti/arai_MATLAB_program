@@ -17,7 +17,7 @@ MEL_SAMPLE_LIST_CH = [
     MELCTRL_DEVTYPE_EEG+4 MELCTRL_DEVTYPE_EEG+5 MELCTRL_DEVTYPE_EEG+6 ...
     MELCTRL_DEVTYPE_EEG+7 MELCTRL_DEVTYPE_EEG+8 ...
     MELCTRL_DEVTYPE_EXT+1 MELCTRL_DEVTYPE_EXT+2];   % チャンネルの設定。ここでECGにすればいいかも？
-CH_NAME = {'FpZ' 'FC3' 'FC4' 'FcZ' 'O1' 'O2' 'Fp2' 'V2' 'EX1' 'EX2'}; % Fp2はまぶた
+CH_NAME = {'FpZ' 'FC3' 'FC4' 'FcZ' 'O1' 'O2' 'Fp2' 'V6' 'EX1' 'EX2'}; % Fp2はまぶた
 RECORD_TIME=rectime*60+20; %計測時間 60分 %30分にする。(途中でやめることも可)
 GAIN=100;
  
@@ -104,8 +104,8 @@ rawdata=[];
 
 % for ECG
 [B2_ECG,A2_ECG] = butter(1,[1/(MEL_SAMPLE_FREQ/2) 60/(MEL_SAMPLE_FREQ/2)]); %フィルタ設計 1-60Hz
-Zf1_ECG = [];
-data1_ECG = [];
+Zf2_ECG = [];
+data2_ECG = [];
 rawdata_ECG =[];
 
 % grand_cyc_epoched_data=[];
@@ -172,7 +172,7 @@ while 1
         
          figure(fig1);subplot(3,1,3)
          plot([1:MEL_SAMPLE_FREQ*3]/MEL_SAMPLE_FREQ,data4_ECG(:,ECG_CH)); % プロット [EEG_CH EOG_CH]
-         axis([1/MEL_SAMPLE_FREQ MEL_SAMPLE_FREQ*3/MEL_SAMPLE_FREQ -1000 1000])
+         axis([1/MEL_SAMPLE_FREQ MEL_SAMPLE_FREQ*3/MEL_SAMPLE_FREQ -1200 1200])
          title(['ECG（心電図）, ' num2str(toc) 'sec']);
          xlabel('time (s)');
          ylabel('uV');
