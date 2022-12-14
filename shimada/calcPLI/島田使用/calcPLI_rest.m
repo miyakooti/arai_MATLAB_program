@@ -1,3 +1,4 @@
+
 %% 自作PLI算出用プログラム(一秒毎のPLIを算出する)
 % rest(平常時PLIを求める => PLI_rとする)
 % ただし、今回はEEG電極が5つ、トリガー(40Hzクリック音), フォトディテクタの7つの場合
@@ -13,11 +14,15 @@ task(:,:)=rawdata(:,:);% ここで読み込み
 % バンドパス
 disp('load rawdata');
 
+%% チャネル設定 これをデータに合わせて変更する
+EX1_CH_index = 9;
+EX2_CH_index = 10;
+
 %% トリガーを出力して、視覚的に閾値(どの値以上がクリック音の始まりか?)を見つける
 subplot(2,1,1);
-plot(task(:,7)); % EX1 40Hzクリック音
+plot(task(:,EX1_CH_index)); % EX1 40Hzクリック音
 subplot(2,1,2);
-plot(task(:,8)); % EX2 フォトディテクタ
+plot(task(:,EX2_CH_index)); % EX2 フォトディテクタ
 
 %% 閾値を設定
 trg_time_t=[];% トリガーの始まりの行数を取得する
@@ -31,6 +36,7 @@ for i=2:length(task)
         trg_time_t=[trg_time_t i];
     end
 end
+% トリガーが出ている範囲を明らかにしている
 
 disp(trg_time_t(1));% for debug
 disp(trg_time_t(end));%for debug
@@ -43,7 +49,7 @@ end
 
 % 5min(=300s)間の分析を想定したコードとする。
 %trg_time_t(920:930)=[]; %% よくない 本当はデータをみてタイミングがずれているトリガは削除
-trg_time_t(301:end)=[];
+trg_time_t(301:end)=[]; %% 300s以降は切り捨てる
 plot(trg_time_t(2:end)-trg_time_t(1:end-1)); %% trigger確認 % トリガー間のデータ数が全て500step(1s)になっているかを視覚的に確認する
 xlim([0,300]);% 0~300(5min)までで打ち切る(分析にはここまでしか必要ないから)
 % ラストのトリガーは実質使用しない(それより後のデータが無いため、PLIを求められないから)
