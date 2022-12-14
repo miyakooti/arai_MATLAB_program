@@ -103,19 +103,10 @@ data2 = [];
 rawdata=[];
 
 % for ECG
-[B2,A2] = butter(1,[1/(MEL_SAMPLE_FREQ/2) 60/(MEL_SAMPLE_FREQ/2)]); %フィルタ設計 1-60Hz
-Zf1 = [];
-data1 = [];
-rawdata=[];
-
-% for ECG 2
-% [B1_ECG,A1_ECG] = butter(5,[5/(MEL_SAMPLE_FREQ/2) 50/(MEL_SAMPLE_FREQ/2)]); %フィルタ設計 5-50Hz
-% [B2_ECG,A2_ECG] = butter(5,[5/(MEL_SAMPLE_FREQ/2) 30/(MEL_SAMPLE_FREQ/2)]); %フィルタ設計 5-30Hz
-% Zf1_ECG = [];
-% Zf2_ECG = [];
-% data1_ECG = [];
-% data2_ECG = [];
-% rawdata_ECG=[];
+[B2_ECG,A2_ECG] = butter(1,[1/(MEL_SAMPLE_FREQ/2) 60/(MEL_SAMPLE_FREQ/2)]); %フィルタ設計 1-60Hz
+Zf1_ECG = [];
+data1_ECG = [];
+rawdata_ECG =[];
 
 % grand_cyc_epoched_data=[];
 loop_cnt=1;
@@ -153,62 +144,39 @@ while 1
         end
         tempdata = mel4mex('ReadAcqDataN', HANDLE, UNIT_N)/GAIN*(6/2^16)*10^6; %マイクロボルトに変換
         
-%         [tempdata1,Zf1] = filter(B1, A1, tempdata',Zf1); %フィルタ適用 5-50Hz
-%         [tempdata2,Zf2] = filter(B2, A2, tempdata',Zf2); %フィルタ適用 5-30Hz
-%         data1 = [data1;tempdata1]; %フィルタ(5-50Hz)のデータ連結
-%         data2 = [data2;tempdata2]; %フィルタ(5-30Hz)のデータ連結
-%         rawdata=[rawdata; tempdata'];
-%         data3 = data1(end-3*MEL_SAMPLE_FREQ+1:end,:); %data1の最新データ 3秒分のデータ抽出
-%         data4 = data2(end-3*MEL_SAMPLE_FREQ+1:end,:); %data2の最新データ 3秒分のデータ抽出
-%         
-%         rawdata2s=rawdata(end-3*MEL_SAMPLE_FREQ+1:end,:); %rawdataの最新データ 3秒分のデータ抽出
+         [tempdata1,Zf1] = filter(B1, A1, tempdata',Zf1); %フィルタ適用 5-50Hz
+         [tempdata2,Zf2] = filter(B2, A2, tempdata',Zf2); %フィルタ適用 5-30Hz
+         data1 = [data1;tempdata1]; %フィルタ(5-50Hz)のデータ連結
+         data2 = [data2;tempdata2]; %フィルタ(5-30Hz)のデータ連結
+         rawdata=[rawdata; tempdata'];
+         data3 = data1(end-3*MEL_SAMPLE_FREQ+1:end,:); %data1の最新データ 3秒分のデータ抽出
+         data4 = data2(end-3*MEL_SAMPLE_FREQ+1:end,:); %data2の最新データ 3秒分のデータ抽出
+         
+         rawdata2s=rawdata(end-3*MEL_SAMPLE_FREQ+1:end,:); %rawdataの最新データ 3秒分のデータ抽出
 
         
-%          figure(fig1);subplot(3,1,1)
-%          plot([1:MEL_SAMPLE_FREQ*3]/MEL_SAMPLE_FREQ,data4(:,EEG_CH)); % プロット [EEG_CH EOG_CH]
-%          axis([1/MEL_SAMPLE_FREQ MEL_SAMPLE_FREQ*3/MEL_SAMPLE_FREQ -50 50])
-%          title(['EEG, ' num2str(toc) 'sec']);
-%          xlabel('time (s)');
-%          ylabel('uV');
-%          legend(CH_NAME(EEG_CH));%[EEG_CH EOG_CH]
-         
+          figure(fig1);subplot(3,1,1)
+          plot([1:MEL_SAMPLE_FREQ*3]/MEL_SAMPLE_FREQ,data4(:,EEG_CH)); % プロット [EEG_CH EOG_CH]
+          axis([1/MEL_SAMPLE_FREQ MEL_SAMPLE_FREQ*3/MEL_SAMPLE_FREQ -50 50])
+          title(['EEG, ' num2str(toc) 'sec']);
+          xlabel('time (s)');
+          ylabel('uV');
+          legend(CH_NAME(EEG_CH));%[EEG_CH EOG_CH]
+        
 
 % for ECG 1
-        [tempdata2,Zf2] = filter(B2, A2, tempdata',Zf2); %フィルタ適用 5-30Hz
-        data2 = [data2;tempdata2]; %フィルタ(0.15-60Hz)のデータ連結
-        rawdata=[rawdata; tempdata'];
-        data4 = data2(end-3*MEL_SAMPLE_FREQ+1:end,:); %data2の最新データ 3秒分のデータ抽出
+        [tempdata2_ECG,Zf2_ECG] = filter(B2_ECG, A2_ECG, tempdata',Zf2_ECG); %フィルタ適用 5-30Hz
+        data2_ECG = [data2_ECG;tempdata2_ECG]; %フィルタ(0.15-60Hz)のデータ連結
+        rawdata_ECG = [rawdata_ECG; tempdata'];
+        data4_ECG = data2_ECG(end-3*MEL_SAMPLE_FREQ+1:end,:); %data2の最新データ 3秒分のデータ抽出
         
-        rawdata2s=rawdata(end-3*MEL_SAMPLE_FREQ+1:end,:); %rawdataの最新データ 3秒分のデータ抽出
-
-         figure(fig1);subplot(3,1,1)
-         plot([1:MEL_SAMPLE_FREQ*3]/MEL_SAMPLE_FREQ,data4(:,ECG_CH)); % プロット [EEG_CH EOG_CH]
+         figure(fig1);subplot(3,1,3)
+         plot([1:MEL_SAMPLE_FREQ*3]/MEL_SAMPLE_FREQ,data4_ECG(:,ECG_CH)); % プロット [EEG_CH EOG_CH]
          axis([1/MEL_SAMPLE_FREQ MEL_SAMPLE_FREQ*3/MEL_SAMPLE_FREQ -1000 1000])
-         title(['ECG, ' num2str(toc) 'sec']);
+         title(['ECG（心電図）, ' num2str(toc) 'sec']);
          xlabel('time (s)');
          ylabel('uV');
          legend(CH_NAME(ECG_CH));%[EEG_CH EOG_CH]
-        
-
-% for ECG 2
-        
-%         [tempdata1_ECG,Zf1_ECG] = filter(B1_ECG, A1_ECG, tempdata',Zf1_ECG); %フィルタ適用 5-50Hz
-%         [tempdata2_ECG,Zf2_ECG] = filter(B2_ECG, A2_ECG, tempdata',Zf2_ECG); %フィルタ適用 5-30Hz
-%         data1_ECG = [data1_ECG;tempdata1_ECG]; %フィルタ(5-50Hz)のデータ連結
-%         data2_ECG = [data2_ECG;tempdata2_ECG]; %フィルタ(5-30Hz)のデータ連結
-%         rawdata_ECG=[rawdata_ECG; tempdata'];
-%         data3_ECG = data1_ECG(end-3*MEL_SAMPLE_FREQ+1:end,:); %data1の最新データ 3秒分のデータ抽出
-%         data4_ECG = data2_ECG(end-3*MEL_SAMPLE_FREQ+1:end,:); %data2の最新データ 3秒分のデータ抽出
-%         
-%         rawdata2s_ECG=rawdata_ECG(end-3*MEL_SAMPLE_FREQ+1:end,:); %rawdataの最新データ 3秒分のデータ抽出
-% 
-%         figure(fig1);subplot(3,1,1)
-%         plot([1:MEL_SAMPLE_FREQ*3]/MEL_SAMPLE_FREQ,data4_ECG(:,ECG_CH)); % プロット [EEG_CH EOG_CH]
-%         axis([1/MEL_SAMPLE_FREQ MEL_SAMPLE_FREQ*3/MEL_SAMPLE_FREQ -1000 1000])
-%         title(['心電図, ' num2str(toc) 'sec']);
-%         xlabel('time (s)');
-%         ylabel('uV');
-%         legend(CH_NAME(ECG_CH));%[EEG_CH EOG_CH]
         
         % EX1の表示
         figure(fig1);subplot(3,2,4)
