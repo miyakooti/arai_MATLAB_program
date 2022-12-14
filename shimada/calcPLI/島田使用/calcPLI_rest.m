@@ -15,8 +15,9 @@ task(:,:)=rawdata(:,:);% ここで読み込み
 disp('load rawdata');
 
 %% チャネル設定 これをデータに合わせて変更する
-EX1_CH_index = 9;
-EX2_CH_index = 10;
+ECG_CH_index = 8; % 心電図
+EX1_CH_index = 9; % トリガー
+EX2_CH_index = 10; % フォトディテクタ
 
 %% トリガーを出力して、視覚的に閾値(どの値以上がクリック音の始まりか?)を見つける
 subplot(2,1,1);
@@ -32,7 +33,7 @@ th_s=-1230;% ここに閾値を入れる% 小さいほうに合わせる(一発目のトリガーだけに引っ
 %% 分析する全てのトリガーを取得
 for i=2:length(task)
     % 閾値がマイナスの場合は、ここの2つの不等号が逆になる
-    if(task(i,7) < th_s && task(i-1,7) > th_s)% 閾値より大きくかつ、前のデータが閾値未満であれば、それをトリガーの開始とする
+    if(task(i,EX1_CH_index) < th_s && task(i-1,EX1_CH_index) > th_s)% 閾値より大きくかつ、前のデータが閾値未満であれば、それをトリガーの開始とする
         trg_time_t=[trg_time_t i];
     end
 end
@@ -58,8 +59,8 @@ freq=500;%% サンプリング周波数(EEGの)
 div_sec=1;%% どのくらいの長さで区切るか? => 今回は1s毎に区切る
 % task(end,:)=[]; %最終行にNaNが含まれる場合に使用
 
-EEG_task=task(:,1:6);% EEGデータだけ抜き取る
-EEG_task(end+1:155000,1:6)=0;%% プラス10sしている(恐らくプログラムが止まらないようにするため)((300 + 10)s * 500hz)
+EEG_task=task(:,1:ECG_CH_index-1);% EEGデータだけ抜き取る。心電図のデータは入らないようにした
+EEG_task(end+1:155000,1:ECG_CH_index-1)=0;%% プラス10sしている(恐らくプログラムが止まらないようにするため)((300 + 10)s * 500hz)
 div_EEG_task=[];% 1s毎の脳波データを取得するところ % また、3次元目が毎回60であるが、これは60s間のデータを持っている為(PLI算出には60s間のデータが必要)
 PLI_r=[];
 
@@ -90,19 +91,19 @@ figure(2);
 plot(PLI_r(2:500,4,1,200));% 1:周波数成分, 2:チャンネル(電極), 3:良く分からん(1のみ), 4:時間(60~420)
 
 %% 時間単位でのPLIを出力(40Hz部分だけ抽出する)
-PLI(1:300,6) = 0;% for output(40Hz)
+PLI(1:300,ECG_CH_index-1) = 0;% for output(40Hz)
 for i = 60:300
-    PLI(i, 1:6) = PLI_r(41, 1:6, 1, i);% 「1:6」の所を「2」とかにすれば、1つの電極だけのデータが出る
+    PLI(i, 1:ECG_CH_index-1) = PLI_r(41, 1:ECG_CH_index-1, 1, i);% 「1:6」の所を「2」とかにすれば、1つの電極だけのデータが出る
 end
 % output
 figure(3);
 plot(PLI(:,3));
 
 % output mean
-disp("mean1(まぶた) : " + mean(PLI(60:300,1)));
-disp("mean2 : " + mean(PLI(60:300,2)));
-disp("mean3 : " + mean(PLI(60:300,3)));
-disp("mean4 : " + mean(PLI(60:300,4)));
-disp("mean5 : " + mean(PLI(60:300,5)));
-disp("mean6 : " + mean(PLI(60:300,6)));
+disp("mean_CH1(まぶた) : " + mean(PLI(60:300,1)));
+disp("mean_CH2 : " + mean(PLI(60:300,2)));
+disp("mean_CH3 : " + mean(PLI(60:300,3)));
+disp("mean_CH4 : " + mean(PLI(60:300,4)));
+disp("mean_CH5 : " + mean(PLI(60:300,5)));
+disp("mean_CH6 : " + mean(PLI(60:300,6)));
 disp("meanAll : " + mean(mean(PLI(60:300,:))));
