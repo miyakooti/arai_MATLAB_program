@@ -17,10 +17,12 @@ MEL_SAMPLE_LIST_CH = [
     MELCTRL_DEVTYPE_EEG+4 MELCTRL_DEVTYPE_EEG+5 MELCTRL_DEVTYPE_EEG+6 ...
     MELCTRL_DEVTYPE_EEG+7 MELCTRL_DEVTYPE_EEG+8 ...
     MELCTRL_DEVTYPE_EXT+1 MELCTRL_DEVTYPE_EXT+2];   % チャンネルの設定。ここでECGにすればいいかも？
-CH_NAME = {'FC3' 'FCz ' 'FC4' 'F3' 'FZ' 'F4' 'F10' 'V2' 'EX1' 'EX2'};
+CH_NAME = {'FpZ' 'FC3' 'FC4' 'FcZ' 'O1' 'O2' 'Fp2' 'V2' 'EX1' 'EX2'}; % Fp2はまぶた
 RECORD_TIME=rectime*60+20; %計測時間 60分 %30分にする。(途中でやめることも可)
 GAIN=100;
  
+% `Sony Walkman + Elecom イヤホン`を脳波計の「「「EX1」」」(エクスターナル1)にセット
+%  - 40Hz音(to 被験者) + 1s毎のクリック音(to EEG)
 
 % Polymate Mini Init
 fprintf('[Init]');
@@ -101,7 +103,7 @@ data2 = [];
 rawdata=[];
 
 % for ECG
-[B2,A2] = butter(1,[1/(MEL_SAMPLE_FREQ/2) 60/(MEL_SAMPLE_FREQ/2)]); %フィルタ設計 0.15-60Hz
+[B2,A2] = butter(1,[1/(MEL_SAMPLE_FREQ/2) 60/(MEL_SAMPLE_FREQ/2)]); %フィルタ設計 1-60Hz
 Zf1 = [];
 data1 = [];
 rawdata=[];
