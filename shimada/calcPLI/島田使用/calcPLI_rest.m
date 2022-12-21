@@ -50,10 +50,12 @@ for i=2:length(task)/500+1
 end
 
 % 5min(=300s)間の分析を想定したコードとする。
+%% これを改良して、calc_time間の分析を想定する。
+calc_time = 300;
 %trg_time_t(920:930)=[]; %% よくない 本当はデータをみてタイミングがずれているトリガは削除
-trg_time_t(301:end)=[]; %% 300s以降は切り捨てる
+trg_time_t(calc_time+1:end)=[]; %% 300s以降は切り捨てる
 plot(trg_time_t(2:end)-trg_time_t(1:end-1)); %% trigger確認 % トリガー間のデータ数が全て500step(1s)になっているかを視覚的に確認する
-xlim([0,300]);% 0~300(5min)までで打ち切る(分析にはここまでしか必要ないから)
+xlim([0,calc_time]);% 0~300(5min)までで打ち切る(分析にはここまでしか必要ないから)
 % ラストのトリガーは実質使用しない(それより後のデータが無いため、PLIを求められないから)
 %% epoch（1秒区切り）
 freq=500;%% サンプリング周波数(EEGの)
@@ -92,8 +94,8 @@ figure(2);
 plot(PLI_r(2:500,4,1,200));% 1:周波数成分, 2:チャンネル(電極), 3:良く分からん(1のみ), 4:時間(60~420)
 
 %% 時間単位でのPLIを出力(40Hz部分だけ抽出する)
-PLI(1:300,ECG_CH_index-1) = 0;% for output(40Hz)
-for i = 60:300
+PLI(1:calc_time,ECG_CH_index-1) = 0;% for output(40Hz)
+for i = 60:calc_time
     PLI(i, EEG_CH_index) = PLI_r(41, EEG_CH_index, 1, i);% 「1:6」の所を「2」とかにすれば、1つの電極だけのデータが出る
 end
 % output
@@ -101,10 +103,10 @@ figure(3);
 plot(PLI(:,3));
 
 % output mean
-disp("mean_CH1(まぶた) : " + mean(PLI(60:300,1)));
-disp("mean_CH2 : " + mean(PLI(60:300,2)));
-disp("mean_CH3 : " + mean(PLI(60:300,3)));
-disp("mean_CH4 : " + mean(PLI(60:300,4)));
-disp("mean_CH5 : " + mean(PLI(60:300,5)));
-disp("mean_CH6 : " + mean(PLI(60:300,6)));
-disp("meanAll : " + mean(mean(PLI(60:300,:))));
+disp("mean_CH1(まぶた) : " + mean(PLI(60:calc_time,1)));
+disp("mean_CH2 : " + mean(PLI(60:calc_time,2)));
+disp("mean_CH3 : " + mean(PLI(60:calc_time,3)));
+disp("mean_CH4 : " + mean(PLI(60:calc_time,4)));
+disp("mean_CH5 : " + mean(PLI(60:calc_time,5)));
+disp("mean_CH6 : " + mean(PLI(60:calc_time,6)));
+disp("meanAll : " + mean(mean(PLI(60:calc_time,:))));
