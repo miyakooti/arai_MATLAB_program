@@ -9,7 +9,7 @@ disp('load rawdata');
 
 %% チャネル設定 これを脳波計データに合わせて変更する
 EEG_CH_index = 1:7; % 脳波
-FC2_index = 2;
+FC3_index = 2;
 FC4_index = 3;
 FCz_index = 4;
 ASSR_CH_index = 2:4;
@@ -98,44 +98,47 @@ end
 %% 結果プロット
 figure(2);
 title("PLIの周波数成分");
-plot(PLI_t(2:500,4,1,180));
+plot(PLI_t(2:500,4,1,180)); %2-500Hz
 % for debug => やはり、41が40Hzを表していた。
-%disp("40 : " + PLI_t(40,4,1,180));
-%disp("41 : " + PLI_t(41,4,1,180));
 
 %% 時間単位でのPLIを出力(40Hz部分だけ抽出する)
 PLI40(1:calc_time, 6) = 0;% for output(40Hz)
 for i = 60:calc_time
-    PLI40(i, 1:6) = PLI_t(41, 1:6, 1, i);% 「1:5」の所を「2」とかにすれば、1つの電極だけのデータが出る
+    PLI40(i, EEG_CH_index) = PLI_t(41, EEG_CH_index, 1, i);% 「1:5」の所を「2」とかにすれば、1つの電極だけのデータが出る
 end
+
 % output
 figure(3);
 title("PLI 40Hzのみ");
-plot(PLI40(:,4));
-disp("mean1(まぶた) : " + mean(PLI40(60:calc_time,1)));
-disp("mean2 : " + mean(PLI40(60:calc_time,2)));
-disp("mean3 : " + mean(PLI40(60:calc_time,3)));
-disp("mean4 : " + mean(PLI40(60:calc_time,4)));
-disp("mean5 : " + mean(PLI40(60:calc_time,5)));
-disp("mean6 : " + mean(PLI40(60:calc_time,6)));
-disp("meanAll : " + mean(mean(PLI40(60:calc_time,:))));
+plot(PLI40(:,ASSR_CH_index));
+disp("mean_CH1(まぶた) : " + mean(PLI(60:calc_time,1)));
+disp("mean_FC3 : " + mean(PLI(60:calc_time,2)));
+disp("mean_FC4 : " + mean(PLI(60:calc_time,3)));
+disp("mean_FCz : " + mean(PLI(60:calc_time,4)));
+disp("mean_O1 : " + mean(PLI(60:calc_time,5)));
+disp("mean_O2 : " + mean(PLI(60:calc_time,6)));
+disp("mean_まぶた : " + mean(PLI(60:calc_time,7)));
+disp("meanAll : " + mean(mean(PLI(60:calc_time,:))));
+disp("mean FC2,FC3,FCz : " + mean(mean(PLI(60:calc_time,ASSR_CH_index))));
 
 %% PLI_rの平均を求める(60s ~ => 60s以前は全て0のため)
 % mean(PLI_r(41,1:5,1,60:300), 4);% この一行で求められたので、下に直接ぶち込んだ
 %% rest-taskの時間変異(workloadを算出する)(PLI_r必要)
 concentration(1:calc_time)=0;
 for i=60:calc_time
-    concentration(i,1:6)=mean(PLI_r(41,1:6,1,60:300), 4) - PLI_t(41,1:6,1,i);
+    concentration(i,EEG_CH_index)=mean(PLI_r(41,EEG_CH_index,1,60:calc_time), 4) - PLI_t(41,EEG_CH_index,1,i);
 end
 
 % C3, Cz, C4を平均して、workloadとしても良い
 % 以下は、全ての電極のワークロードをプロットする
 figure(4);
-title("workload 電極2");
-plot(concentration(:,2));
+plot(concentration(:,FC3_index));
+title("workload FC3");
+
 figure(5);
-title("workload 電極3");
-plot(concentration(:,3));
+plot(concentration(:,FC4_index));
+title("workload FC4");
+
 figure(6);
-title("workload 電極4");
-plot(concentration(:,4));
+plot(concentration(:,FCz_index));
+title("workload FCz");
