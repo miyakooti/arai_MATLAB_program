@@ -1,36 +1,25 @@
 %% ワークロードを算出するプログラム(正常時PLI - タスク時PLI)
 % あらかじめ、PLI_r(正常時PLI)を別途出す必要がある(calcPLI_rest.m)で算出可能
 % まぶた用電極も入れた8chでの分析用プログラム
+
 %% EEGを読み込む
-
 task=[];
-task(:,:)=rawdata(:,:);% ここで読み込み
-%EEG_data(:,1:6) = rawdata(:,1:6);
-% ハイパスフィルタをかける(また、EEG部分のみ取り出す)
-%for i=1:6
-%    task(:,i) = highpass(rawdata(:,i),1.0,500,'ImpulseResponse','fir');% 第二引数が周波数(1.0Hz)、第三引数がサンプリング周波数
-    %EEG_data(:,i) = highpass(rawdata(:,i),1,500);
-%end
-% ハイパスフィルタ終了
-%% infomaxの時
-% task(:,1:6) = independence(:,:);
-
-%% 時間同期用に最初の部分を切る(データをなくす)
-% Kinectとの時間同期後に数値を変える(時間同期まとめ.mdの数値を参考に変更する)
-%task(1:7634,:)=[];% この場合、1~7634までのデータをなくす
-
+task(:,:)=rawdata(:,:);
 disp('load rawdata');
 
 %% トリガーを出力して、視覚的に閾値(どの値以上がクリック音の始まりか?)を見つける
-figure(1);
+figure(1)
 subplot(2,1,1);
-plot(task(:,7)); % EX1 40Hzクリック音
+plot(task(:,EX1_CH_index)); % EX1 40Hzクリック音
+title('Trigger')
+
 subplot(2,1,2);
-plot(task(:,8)); % EX2 フォトディテクタ
+plot(task(:,EX2_CH_index)); % EX2 フォトディテクタ
+title('photo detector')
 
 %% 閾値を設定
 trg_time_t=[];% トリガーの始まりの行数を取得する
-th_s=-1238;% ここに閾値を入れる% 小さいほうに合わせる(一発目のトリガーだけに引っかかるだけでよさそう)
+th_s=-2000;% ここに閾値を入れる% 小さいほうに合わせる(一発目のトリガーだけに引っかかるだけでよさそう)
 
 %% 分析する全てのトリガーを取得
 for i=2:length(task)
@@ -56,11 +45,10 @@ firstIndex = diff / 500 + 1;
 trg_time_t(1:firstIndex-1) = [];% 不要な部分を消去
 
 % 20min(=1200s)間の分析を想定したコードとする。
-%trg_time_t(920:930)=[]; %% よくない 本当はデータをみてタイミングがずれているトリガは削除
 trg_time_t(1201:end)=[];
 plot(trg_time_t(2:end)-trg_time_t(1:end-1)); %% trigger確認 % トリガー間のデータ数が全て500step(1s)になっているかを視覚的に確認する
 xlim([0,1200]);% 0~1200(12min)までで打ち切る(分析にはここまでしか必要ないから)
-% ラストのトリガーは実質使用しない(それより後のデータが無いため、PLIを求められないから)
+
 %% epoch（1秒区切り）
 freq=500;%% サンプリング周波数(EEGの)
 div_sec=1;%% どのくらいの長さで区切るか? => 今回は1s毎に区切る
