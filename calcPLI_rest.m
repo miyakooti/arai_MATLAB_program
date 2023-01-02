@@ -12,6 +12,7 @@ EEG_CH_index = 1:7; % ”]”g
 FC2_index = 2;
 FC4_index = 3;
 FCz_index = 4;
+ASSR_CH_index = 2:4;
 
 ECG_CH_index = 8; % S“d}
 EX1_CH_index = 9; % ƒgƒŠƒK[
@@ -71,7 +72,7 @@ EEG_task(end+1:155000,EEG_CH_index)=0;%% ƒvƒ‰ƒX10s‚µ‚Ä‚¢‚é(‹°‚ç‚­ƒvƒƒOƒ‰ƒ€‚ª~‚
 div_EEG_task=[];% 1s–ˆ‚Ì”]”gƒf[ƒ^‚ğæ“¾‚·‚é‚Æ‚±‚ë % ‚Ü‚½A3ŸŒ³–Ú‚ª–ˆ‰ñ60‚Å‚ ‚é‚ªA‚±‚ê‚Í60sŠÔ‚Ìƒf[ƒ^‚ğ‚Á‚Ä‚¢‚éˆ×(PLIZo‚É‚Í60sŠÔ‚Ìƒf[ƒ^‚ª•K—v)
 PLI_r=[];
 
-%% PLIZo 60~‚É‚È‚Á‚Ä‚¢‚é‚Ì‚ÍAPLI‚Í1min‚ÌŠÔ‚Ì”]”g‚ğg‚Á‚Ä‹‚ß‚Ä‚¢‚é‚Ì‚ÅA60s—§‚½‚È‚¢‚ÆÅ‰‚ÌPLI‚ğZo‚Å‚«‚È‚¢‚©‚ç
+%% ü”g”•ûŒü‚Å‚ÌPLIZo
 for n=60:length(trg_time_t)
     for i=1:60
         time=i+n-60;
@@ -95,17 +96,17 @@ end
 % PLI‚ğü”g”•Ê‚ÉŒ©‚Ä‚İ‚é(‰¡²‚ÍHz)
 figure(2);
 plot(PLI_r(2:calc_time,FC2_index,1,200));% 1:ü”g”¬•ª, 2:ƒ`ƒƒƒ“ƒlƒ‹(“d‹É), 3:—Ç‚­•ª‚©‚ç‚ñ(1‚Ì‚İ), 4:ŠÔ(60~420)
-title('ü”g”•ÊPLI')
+title('ü”g”•ÊPLI');
 
-%% ŠÔ’PˆÊ‚Å‚ÌPLI‚ğo—Í(40Hz•”•ª‚¾‚¯’Šo‚·‚é)
+%% ŠÔ•ûŒü‚Å‚ÌPLI‚ğo—Í(40Hz•”•ª‚¾‚¯’Šo‚·‚é)
 PLI(1:calc_time,ECG_CH_index-1) = 0;% for output(40Hz)
 for i = 60:calc_time
     PLI(i, EEG_CH_index) = PLI_r(41, EEG_CH_index, 1, i);% u1:6v‚ÌŠ‚ğu2v‚Æ‚©‚É‚·‚ê‚ÎA1‚Â‚Ì“d‹É‚¾‚¯‚Ìƒf[ƒ^‚ªo‚é
 end
 % output
 figure(3);
-plot(PLI(:,3));
-title('PLI‚ÌŒn—ñ•Ï‰»')
+plot(PLI(:,ASSR_CH_index));
+title('PLI‚ÌŒn—ñ•Ï‰»');
 
 
 % output mean
