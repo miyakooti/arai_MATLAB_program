@@ -9,20 +9,31 @@ disp('load rawdata');
 
 %% チャネル設定 これを脳波計データに合わせて変更する
 EEG_CH_index = 1:7; % 脳波
+FC2_index = 2;
+FC4_index = 3;
+FCz_index = 4;
 
 ECG_CH_index = 8; % 心電図
 EX1_CH_index = 9; % トリガー
 EX2_CH_index = 10; % フォトディテクタ
 
+%% サンプリング周波数
+freq=500;
+
 %% トリガーを出力して、視覚的に閾値(どの値以上がクリック音の始まりか?)を見つける
+figure(1)
 subplot(2,1,1);
 plot(task(:,EX1_CH_index)); % EX1 40Hzクリック音
+title('Trigger')
+
 subplot(2,1,2);
 plot(task(:,EX2_CH_index)); % EX2 フォトディテクタ
+title('photo detector')
+
 
 %% 閾値を設定
 trg_time_t=[];% トリガーの始まりの行数を取得する
-th_s=-1230;% ここに閾値を入れる% 小さいほうに合わせる(一発目のトリガーだけに引っかかるだけでよさそう)
+th_s=-2000;% ここに閾値を入れる% 小さいほうに合わせる(一発目のトリガーだけに引っかかるだけでよさそう)
 % rawdataの赤いやつ
 
 %% 分析する全てのトリガーを取得
@@ -34,9 +45,11 @@ for i=2:length(task)
 end
 % トリガーが出ている範囲を明らかにしている
 
-disp(trg_time_t(1));% for debug
-disp(trg_time_t(end));%for debug
+disp("----------------------------------------")
+disp("initial trigger time = " + trg_time_t(1));% for debug
+disp("end of trigger time = " + trg_time_t(end));% for debug
 disp("trg length = " + length(task));
+disp("----------------------------------------")
 
 % 500step(=1s)刻みの値をトリガータイムとして追加(クリック音が1s毎に繰り返されるため)
 for i=2:length(task)/500+1
@@ -46,24 +59,20 @@ end
 % 5min(=300s)間の分析を想定したコードとする。
 %% これを改良して、calc_time間の分析を想定する。
 calc_time = 300;
-%trg_time_t(920:930)=[]; %% よくない 本当はデータをみてタイミングがずれているトリガは削除
-trg_time_t(calc_time+1:end)=[]; %% 300s以降は切り捨てる
+trg_time_t(calc_time+1:end)=[]; %% calc_time以降は空配列で上書きして切り捨てる
 plot(trg_time_t(2:end)-trg_time_t(1:end-1)); %% trigger確認 % トリガー間のデータ数が全て500step(1s)になっているかを視覚的に確認する
 xlim([0,calc_time]);% 0~300(5min)までで打ち切る(分析にはここまでしか必要ないから)
-% ラストのトリガーは実質使用しない(それより後のデータが無いため、PLIを求められないから)
-%% epoch（1秒区切り）
-freq=500;%% サンプリング周波数(EEGの)
-div_sec=1;%% どのくらいの長さで区切るか? => 今回は1s毎に区切る
-% task(end,:)=[]; %最終行にNaNが含まれる場合に使用
 
-EEG_task=task(:,EEG_CH_index);% EEGデータだけ抜き取る。心電図のデータは入らないようにした
+%% epoch（1秒区切りで作成する）
+div_sec=1;%% どのくらいの長さで区切るか? => 今回は1s毎に区切る
+
+EEG_task=task(:,EEG_CH_index);% EEGデータだけ抜き取る。
 EEG_task(end+1:155000,EEG_CH_index)=0;%% プラス10sしている(恐らくプログラムが止まらないようにするため)((300 + 10)s * 500hz)
 div_EEG_task=[];% 1s毎の脳波データを取得するところ % また、3次元目が毎回60であるが、これは60s間のデータを持っている為(PLI算出には60s間のデータが必要)
 PLI_r=[];
 
 %% PLI算出 60~になっているのは、PLIは1minの間の脳波を使って求めているので、60s立たないと最初のPLIを算出できないから
 for n=60:length(trg_time_t)
-%for n=60:300
     for i=1:60
         time=i+n-60;
         div_EEG_task(:,:,i)=EEG_task(trg_time_t(time):trg_time_t(time)+freq*div_sec-1,:);% 60s間の脳波データを取得
@@ -85,7 +94,8 @@ end
 % PLI_t => 第一引数: Hz, 第二引数: チャンネル(電極), 第三引数: ?(1のみ), 第四引数: 時間(60~1200(s))
 % PLIを周波数別に見てみる(横軸はHz)
 figure(2);
-plot(PLI_r(2:500,4,1,200));% 1:周波数成分, 2:チャンネル(電極), 3:良く分からん(1のみ), 4:時間(60~420)
+plot(PLI_r(2:calc_time,FC2_index,1,200));% 1:周波数成分, 2:チャンネル(電極), 3:良く分からん(1のみ), 4:時間(60~420)
+title('周波数別PLI')
 
 %% 時間単位でのPLIを出力(40Hz部分だけ抽出する)
 PLI(1:calc_time,ECG_CH_index-1) = 0;% for output(40Hz)
@@ -95,14 +105,17 @@ end
 % output
 figure(3);
 plot(PLI(:,3));
+title('PLIの時系列変化')
+
 
 % output mean
 disp("mean_CH1(まぶた) : " + mean(PLI(60:calc_time,1)));
-disp("mean_CH2 : " + mean(PLI(60:calc_time,2)));
-disp("mean_CH3 : " + mean(PLI(60:calc_time,3)));
-disp("mean_CH4 : " + mean(PLI(60:calc_time,4)));
-disp("mean_CH5 : " + mean(PLI(60:calc_time,5)));
-disp("mean_CH6 : " + mean(PLI(60:calc_time,6)));
+disp("mean_FC2 : " + mean(PLI(60:calc_time,2)));
+disp("mean_FC4 : " + mean(PLI(60:calc_time,3)));
+disp("mean_FCz : " + mean(PLI(60:calc_time,4)));
+disp("mean_O1 : " + mean(PLI(60:calc_time,5)));
+disp("mean_O2 : " + mean(PLI(60:calc_time,6)));
+disp("mean_まぶた : " + mean(PLI(60:calc_time,7)));
 disp("meanAll : " + mean(mean(PLI(60:calc_time,:))));
 disp("mean FC2,FC3,FCz : " + mean(mean(PLI(60:calc_time,2:4))));
 
