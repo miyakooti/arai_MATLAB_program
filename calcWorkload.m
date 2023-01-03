@@ -61,7 +61,16 @@ end
 
 % 20min(=calc_times)間の分析を想定したコードとする。
 % これを改良して、calc_time間の分析をできるようにする
-calc_time = 200; % 180=3min, 300=5min
+if contains(subject, "ultra") 
+    calc_time = 180; % 3 min
+elseif contains(subject, "practice")
+    calc_time = 180;
+else    
+    calc_time = 300; % 5 min
+end
+disp(calc_time)
+disp(contains(subject, "pracice"))
+
 trg_time_t(calc_time+1:end)=[];
 plot(trg_time_t(2:end)-trg_time_t(1:end-1)); %% trigger確認 % トリガー間のデータ数が全て500step(1s)になっているかを視覚的に確認する
 xlim([0,calc_time]);% 0~calc_timeまでで打ち切る(分析にはここまでしか必要ないから)
@@ -107,7 +116,7 @@ for i = 60:calc_time
     PLI40(i, EEG_CH_index) = PLI_t(41, EEG_CH_index, 1, i);% チャネルインデックスは自由に変更してOK
 end
 
-% output
+% output　ここから出力される値は、rest状態の差分とか関係ない
 figure(3);
 title("PLI 40Hzのみ");
 plot(PLI40(:,ASSR_CH_index));
