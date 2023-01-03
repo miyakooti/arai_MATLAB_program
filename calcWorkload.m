@@ -61,7 +61,7 @@ end
 
 % 20min(=calc_times)間の分析を想定したコードとする。
 % これを改良して、calc_time間の分析をできるようにする
-calc_time = 300; % 180=3min, 300=5min
+calc_time = 200; % 180=3min, 300=5min
 trg_time_t(calc_time+1:end)=[];
 plot(trg_time_t(2:end)-trg_time_t(1:end-1)); %% trigger確認 % トリガー間のデータ数が全て500step(1s)になっているかを視覚的に確認する
 xlim([0,calc_time]);% 0~calc_timeまでで打ち切る(分析にはここまでしか必要ないから)
@@ -104,22 +104,22 @@ plot(PLI_t(2:500,4,1,180)); %2-500Hz
 %% 時間単位でのPLIを出力(40Hz部分だけ抽出する)
 PLI40(1:calc_time, 6) = 0;% for output(40Hz)
 for i = 60:calc_time
-    PLI40(i, EEG_CH_index) = PLI_t(41, EEG_CH_index, 1, i);% 「1:5」の所を「2」とかにすれば、1つの電極だけのデータが出る
+    PLI40(i, EEG_CH_index) = PLI_t(41, EEG_CH_index, 1, i);% チャネルインデックスは自由に変更してOK
 end
 
 % output
 figure(3);
 title("PLI 40Hzのみ");
 plot(PLI40(:,ASSR_CH_index));
-disp("mean_CH1(まぶた) : " + mean(PLI(60:calc_time,1)));
-disp("mean_FC3 : " + mean(PLI(60:calc_time,2)));
-disp("mean_FC4 : " + mean(PLI(60:calc_time,3)));
-disp("mean_FCz : " + mean(PLI(60:calc_time,4)));
-disp("mean_O1 : " + mean(PLI(60:calc_time,5)));
-disp("mean_O2 : " + mean(PLI(60:calc_time,6)));
-disp("mean_まぶた : " + mean(PLI(60:calc_time,7)));
-disp("meanAll : " + mean(mean(PLI(60:calc_time,:))));
-disp("mean FC2,FC3,FCz : " + mean(mean(PLI(60:calc_time,ASSR_CH_index))));
+disp("mean_CH1(まぶた) : " + mean(PLI40(60:calc_time,1)));
+disp("mean_FC3 : " + mean(PLI40(60:calc_time,2)));
+disp("mean_FC4 : " + mean(PLI40(60:calc_time,3)));
+disp("mean_FCz : " + mean(PLI40(60:calc_time,4)));
+disp("mean_O1 : " + mean(PLI40(60:calc_time,5)));
+disp("mean_O2 : " + mean(PLI40(60:calc_time,6)));
+disp("mean_まぶた : " + mean(PLI40(60:calc_time,7)));
+disp("meanAll : " + mean(mean(PLI40(60:calc_time,:))));
+disp("mean FC2,FC3,FCz : " + mean(mean(PLI40(60:calc_time,ASSR_CH_index))));
 
 %% PLI_rの平均を求める(60s ~ => 60s以前は全て0のため)
 % mean(PLI_r(41,1:5,1,60:300), 4);% この一行で求められたので、下に直接ぶち込んだ

@@ -1,4 +1,3 @@
-
 %% rest(•½íŽžPLI‚ð‹‚ß‚é => PLI_r‚Æ‚·‚é)
 
 %% EEG‚ð“Ç‚Ýž‚Þ
