@@ -64,12 +64,10 @@ end
 if contains(subject, "ultra") 
     calc_time = 180; % 3 min
 elseif contains(subject, "practice")
-    calc_time = 180;
+    calc_time = 160;
 else    
     calc_time = 300; % 5 min
 end
-disp(calc_time)
-disp(contains(subject, "pracice"))
 
 trg_time_t(calc_time+1:end)=[];
 plot(trg_time_t(2:end)-trg_time_t(1:end-1)); %% trigger確認 % トリガー間のデータ数が全て500step(1s)になっているかを視覚的に確認する
@@ -107,7 +105,7 @@ end
 %% 結果プロット
 figure(2);
 title("PLIの周波数成分");
-plot(PLI_t(2:500,4,1,180)); %2-500Hz
+plot(PLI_t(2:500,4,1,calc_time)); %2-500Hz
 % for debug => やはり、41が40Hzを表していた。
 
 %% 時間単位でのPLIを出力(40Hz部分だけ抽出する)
@@ -119,7 +117,7 @@ end
 % output　ここから出力される値は、rest状態の差分とか関係ない
 figure(3);
 title("PLI 40Hzのみ");
-plot(PLI40(:,ASSR_CH_index));
+plot(PLI40(1:calc_time,ASSR_CH_index));
 disp("mean_CH1(まぶた) : " + mean(PLI40(60:calc_time,1)));
 disp("mean_FC3 : " + mean(PLI40(60:calc_time,2)));
 disp("mean_FC4 : " + mean(PLI40(60:calc_time,3)));
@@ -141,13 +139,13 @@ end
 % C3, Cz, C4を平均して、workloadとしても良い
 % 以下は、全ての電極のワークロードをプロットする
 figure(4);
-plot(concentration(:,FC3_index));
+plot(concentration(1:calc_time,FC3_index));
 title("workload FC3");
 
 figure(5);
-plot(concentration(:,FC4_index));
+plot(concentration(1:calc_time,FC4_index));
 title("workload FC4");
 
 figure(6);
-plot(concentration(:,FCz_index));
+plot(concentration(1:calc_time,FCz_index));
 title("workload FCz");
