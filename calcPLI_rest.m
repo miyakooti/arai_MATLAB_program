@@ -9,7 +9,7 @@ disp('load rawdata');
 
 %% チャネル設定 これを脳波計データに合わせて変更する
 EEG_CH_index = 1:7; % 脳波
-FC2_index = 2;
+FC3_index = 2;
 FC4_index = 3;
 FCz_index = 4;
 ASSR_CH_index = 2:4;
@@ -35,7 +35,6 @@ title('photo detector')
 %% 閾値を設定
 trg_time_t=[];% トリガーの始まりの行数を取得する
 th_s=-2000;% ここに閾値を入れる% 小さいほうに合わせる(一発目のトリガーだけに引っかかるだけでよさそう)
-% rawdataの赤いやつ
 
 %% 分析する全てのトリガーを取得
 for i=2:length(task)
@@ -95,7 +94,7 @@ end
 % PLI_t => 第一引数: Hz, 第二引数: チャンネル(電極), 第三引数: ?(1のみ), 第四引数: 時間(60~1200(s))
 % PLIを周波数別に見てみる(横軸はHz)
 figure(2);
-plot(PLI_r(2:500,FC2_index,1,200));% 1:周波数成分, 2:チャンネル(電極), 3:良く分からん(1のみ), 4:時間(60~420)
+plot(PLI_r(2:500,FC3_index,1,200));% 1:周波数成分, 2:チャンネル(電極), 3:良く分からん(1のみ), 4:時間(60~420)
 title('周波数別PLI');
 
 %% 時間方向でのPLIを出力(40Hz部分だけ抽出する)
@@ -111,7 +110,7 @@ title('PLIの時系列変化');
 
 % output mean
 disp("mean_CH1(まぶた) : " + mean(PLI(60:calc_time,1)));
-disp("mean_FC2 : " + mean(PLI(60:calc_time,2)));
+disp("mean_FC3 : " + mean(PLI(60:calc_time,2)));
 disp("mean_FC4 : " + mean(PLI(60:calc_time,3)));
 disp("mean_FCz : " + mean(PLI(60:calc_time,4)));
 disp("mean_O1 : " + mean(PLI(60:calc_time,5)));
