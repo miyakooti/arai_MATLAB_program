@@ -1,12 +1,12 @@
-%calcPLI_1s1を一気に回すスクリプト
-%MにKinectとの同期時間を代入
+%export_PLIを一気に回すスクリプト
 mats = dir("data/**/*.mat");
-keySet = ["kumakura_rest","kumakura_practice",...
+keySet = ["kumakura_rest","kumakura_practice","kumakura_boredom","kumakura_flow","kumakura_ultra","kumakura_overload", ...
+    "kim_rest","kim_practice","kim_boredom","kim_flow","kim_ultra","kim_overload", ...
+    "souma_rest","souma_practice","souma_boredom","souma_flow","souma_ultra","souma_overload", ...
+    "fujii_rest","fujii_practice","fujii_boredom","fujii_flow","fujii_ultra","fujii_overload", ...
+    "tubota_rest","tubota_practice","tubota_boredom","tubota_flow","tubota_ultra","tubota_overload", ...
+    "toki_rest","toki_practice","toki_boredom","toki_flow","toki_ultra","toki_overload", ...
            ];
-valueSet = [0, 7636,...
-            ];
-
-M = containers.Map(keySet,valueSet);
 
 for i=1:length(mats)
     path = strcat(mats(i).folder,"/", mats(i).name);
@@ -14,8 +14,6 @@ for i=1:length(mats)
     if ~ismember(subject, keySet)
         continue
     end
-    disp(subject); 
-    disp(M(subject));
-    bunsekikaisiten = M(subject);
-    run("calcPLI_1s");
+
+    run("export_PLI");
 end
