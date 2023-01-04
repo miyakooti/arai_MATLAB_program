@@ -1,6 +1,7 @@
 
 if contains(subject, "rest") && not(contains(subject, "restart"))
     
+    run("calcPLI_rest");
     PLI_data=PLI(60:length(PLI),ASSR_CH_index);
     
     % num2cell()により、配列データをcell配列に変換できる
@@ -8,11 +9,13 @@ if contains(subject, "rest") && not(contains(subject, "restart"))
     data = [num2cell(PLI_data)];
     C = [Vname;data];
     folder_name = findFolderName(subject);
-    path = "csv/"+folder_name+"/PLIdata/PLI_"+subject+".csv";
+    phase_number = findPhaseNumber(subject);
+    path = "csv/"+folder_name+"/PLIdata/PLI_"+phase_number+"_"+subject+".csv";
     writecell(C,path)% 出力
     
 else    
     
+    run("calcWorkload");
     PLI40_data=PLI40(60:length(PLI40),ASSR_CH_index);
     concentration_data=concentration(60:length(concentration),ASSR_CH_index);
     
@@ -23,8 +26,9 @@ else
     C1 = [Vname;PLI40_data];
     C2 = [Vname;concentration_data];
     folder_name = findFolderName(subject);
-    path1 = "csv/"+folder_name+"/PLIdata/PLI_"+subject+".csv";
-    path2 = "csv/"+folder_name+"/PLIdata/concentration_"+subject+".csv";
+    phase_number = findPhaseNumber(subject);
+    path1 = "csv/"+folder_name+"/PLIdata/PLI_"+phase_number+"_"+subject+".csv";
+    path2 = "csv/"+folder_name+"/PLIdata/concentration_"+phase_number+"_"+subject+".csv";
     writecell(C1,path1)% 出力
     writecell(C2,path2)% 出力
     
@@ -47,6 +51,21 @@ function folder_name = findFolderName(subject)
     end
 end
 
+function phase_number = findPhaseNumber(subject)
+    if contains(subject, "rest") && not(contains(subject, "restart"))
+        phase_number = "0";
+    elseif contains(subject, "practice")
+        phase_number = "1";
+    elseif contains(subject, "boredom")
+        phase_number = "2";
+    elseif contains(subject, "ultra")
+        phase_number = "4";
+    elseif contains(subject, "flow")
+        phase_number = "3";
+    elseif contains(subject, "overload")
+        phase_number = "5";
+    end
+end
 
 
 
