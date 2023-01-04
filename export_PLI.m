@@ -1,5 +1,5 @@
 
-if contains(subject, "rest") 
+if contains(subject, "rest") && not(contains(subject, "restart"))
     
     PLI_data=PLI(60:length(PLI),ASSR_CH_index);
     
