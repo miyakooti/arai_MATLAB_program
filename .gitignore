@@ -1,3 +1,4 @@
 /data/*
 /archive/eeg_archive_data/*
 *.asv
+/csv/?_*/EEG/rawdata_*.csv
