@@ -1,0 +1,19 @@
+%export_rawdataを一気に回すスクリプト
+mats = dir("data/**/*.mat");
+keySet = ["kumakura_rest","kumakura_practice","kumakura_boredom","kumakura_flow","kumakura_flow_ultra","kumakura_overload", ...
+    "kim_rest","kim_practice","kim_boredom","kim_flow_restart","kim_ultra","kim_overload", ...
+    "souma_rest","souma_practice","souma_boredom","souma_flow","souma_ultra","souma_overload", ...
+    "fujii_rest","fujii_practice","fujii_boredom","fujii_flow","fujii_ultra","fujii_overload", ...
+    "tubota_rest","tubota_practice","tubota_boredom_restart_impedance","tubota_flow","tubota_ultra","tubota_overload", ...
+    "toki_rest","toki_practice","toki_boredom","toki_flow","toki_ultra","toki_overload", ...
+           ];
+
+for i=1:length(mats)
+    path = strcat(mats(i).folder,"/", mats(i).name);
+    load(path);
+    if ~ismember(subject, keySet)
+        continue
+    end
+
+    run("export_rawdata");
+end
