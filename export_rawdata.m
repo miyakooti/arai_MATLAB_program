@@ -1,6 +1,6 @@
 
     
-data=rawdata(0:length(rawdata),1:7);
+data=rawdata(1:length(rawdata),1:8);
     
 % num2cell()により、配列データをcell配列に変換できる
 columns = {'FpZ' 'FC3' 'FC4' 'FcZ' 'O1' 'O2' 'Fp2','V6'};
@@ -9,7 +9,7 @@ columns = {'FpZ' 'FC3' 'FC4' 'FcZ' 'O1' 'O2' 'Fp2','V6'};
 % あれ、rawdataってどんなフィルタ処理されてるっけ？
 
 data = [num2cell(data)];
-C = [colmns;data];
+C = [columns;data];
 folder_name = findFolderName(subject);
 phase_number = findPhaseNumber(subject);
 path = "csv/"+folder_name+"/EEG/rawdata_"+phase_number+"_"+subject+".csv";
