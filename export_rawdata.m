@@ -1,6 +1,6 @@
 
     
-data=rawdata(1:length(rawdata),1:8);
+data=data1(1:length(data1),1:8);
     
 % num2cell()により、配列データをcell配列に変換できる
 columns = {'FpZ' 'FC3' 'FC4' 'FcZ' 'O1' 'O2' 'Fp2','V6'};
@@ -12,7 +12,7 @@ data = [num2cell(data)];
 C = [columns;data];
 folder_name = findFolderName(subject);
 phase_number = findPhaseNumber(subject);
-path = "csv/"+folder_name+"/EEG/rawdata_"+phase_number+"_"+subject+".csv";
+path = "csv/"+folder_name+"/EEG/filtered_data_"+phase_number+"_"+subject+".csv";
 writecell(C,path)% 出力
     
 
