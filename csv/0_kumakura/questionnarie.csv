@@ -1,7 +1,7 @@
-difficulty,fast,fulfillment,absorb,questionnaire_average
-,,,,
-"				",,,,
-2,2,5,2,2.75
-7,7,7,7,7
-5,7,6,7,6.25
-7,6,2,6,5.25
+,difficulty,fast,fulfillment,absorb,questionnaire_average
+rest,,,,,
+practice,"				",,,,
+boredom,2,2,5,2,2.75
+flow,7,7,7,7,7
+ultra,5,7,6,7,6.25
+overload,7,6,2,6,5.25
