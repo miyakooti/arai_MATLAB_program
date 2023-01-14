@@ -1,7 +1,7 @@
-difficulty	fast	fulfillment	absorb	questionnaire_average
-				
-				
-3	2	4	2	2.75
-5	7	6	7	6.25
-7	7	6	7	6.75
-1	4	2	5	3
+difficulty,fast,fulfillment,absorb,questionnaire_average
+"				",,,,
+"				",,,,
+3,2,4,2,2.75
+5,7,6,7,6.25
+7,7,6,7,6.75
+1,4,2,5,3
