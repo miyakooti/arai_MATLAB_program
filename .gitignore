@@ -3,3 +3,6 @@
 *.asv
 /csv/?_*/EEG/rawdata_*.csv
 /csv/?_*/EEG/filtered_data_*.csv
+
+# これはofficeアプリ開いてる時のファイル
+*/~$*
