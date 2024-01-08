@@ -7,6 +7,6 @@ Vname = {'ECG'};
 data = [num2cell(ecg_data)];
 C = [Vname;data];
 
-path = "csv/ECG_"+subject+".csv";
+path = "csv/temp/ECG_"+subject+".csv";
 
 writecell(C,path)% 出力

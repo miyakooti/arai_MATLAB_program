@@ -48,6 +48,8 @@ function folder_name = findFolderName(subject)
         folder_name = "4_tubota";
     elseif contains(subject, "toki")
         folder_name = "5_toki";
+    elseif contains(subject, "mori")
+        folder_name = "6_mori";
     end
 end
 
