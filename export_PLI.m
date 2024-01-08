@@ -1,11 +1,17 @@
 
+disp("--------------------------")
+disp(subject);
+
+ASSR_CH_index_fixed = [1,2,3,4,5,6,7];
+
 if contains(subject, "rest") && not(contains(subject, "restart"))
     
     run("calcPLI_rest");
-    PLI_data=PLI(60:length(PLI),ASSR_CH_index);
+    PLI_data=PLI(60:length(PLI),[1,2,3,4,5,6,7]);
     
     % num2cell()により、配列データをcell配列に変換できる
-    Vname = {'FC3','FC4','FCz'};
+%     Vname = {'FC3','FC4','FCz'};
+    Vname = {'FpZ','FC3','FC4','FCz','O1','O2','Fp2'};
     data = [num2cell(PLI_data)];
     C = [Vname;data];
     folder_name = findFolderName(subject);
@@ -16,11 +22,12 @@ if contains(subject, "rest") && not(contains(subject, "restart"))
 else    
     
     run("calcWorkload");
-    PLI40_data=PLI40(60:length(PLI40),ASSR_CH_index);
-    concentration_data=concentration(60:length(concentration),ASSR_CH_index);
+    PLI40_data=PLI40(60:length(PLI40),[1,2,3,4,5,6,7]);
+    concentration_data=concentration(60:length(concentration),[1,2,3,4,5,6,7]);
     
     % num2cell()により、配列データをcell配列に変換できる
-    Vname = {'FC3','FC4','FCz'};
+%     Vname = {'FC3','FC4','FCz'};
+    Vname = {'FpZ','FC3','FC4','FCz','O1','O2','Fp2'};
     PLI40_data = [num2cell(PLI40_data)];
     concentration_data = [num2cell(concentration_data)];
     C1 = [Vname;PLI40_data];
