@@ -1,0 +1,8 @@
+ Multiple Comparison of Means - Tukey HSD, FWER=0.10  
+======================================================
+ group1  group2  meandiff p-adj   lower  upper  reject
+------------------------------------------------------
+boredom     flow   0.0463 0.7116 -0.0772 0.1698  False
+boredom overload   0.0831 0.3408 -0.0404 0.2066  False
+   flow overload   0.0368 0.8055 -0.0867 0.1603  False
+------------------------------------------------------
