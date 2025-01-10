@@ -7,7 +7,7 @@ nowtime = datestr(now, 30); % 保存ファイル名用に現時間を取得
 myKeyCheck;
 %:l
 MEL_CTRL;
-MEL_SAMPLE_COMPORT	= 'COM6'; % COMポート番号
+MEL_SAMPLE_COMPORT = 'COM6'; % COMポート番号
 MEL_SAMPLE_UNITSIZE	= 1;
 MEL_SAMPLE_UNIT_N	= 10000; %SIZE 1 のUNITを 10000個確保 → 10000/ 1000Hz =10秒分
 MEL_SAMPLE_FREQ		= 500; %サンプリング周波数
