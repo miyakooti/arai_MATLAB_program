@@ -24,10 +24,6 @@ keySet = ["kumakura_rest","kumakura_boredom","kumakura_flow","kumakura_flow_ultr
      "haruna_rest","haruna_boredom","haruna_flow","haruna_ultra","haruna_overload", ...
             ];
 
-% keySet = ["_rest","_boredom","_flow","_ultra","_overload", ...
-%            ];
-
-
 for i=1:length(mats)
     path = strcat(mats(i).folder,"/", mats(i).name);
     load(path);
@@ -38,4 +34,3 @@ for i=1:length(mats)
     run("export_PLI");
 end
 
-% "_rest","_boredom","_flow","_ultra","_overload", ...
