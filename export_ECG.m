@@ -12,6 +12,8 @@ folder_name = findFolderName(subject);
 
 path = "csv/"+folder_name+"/ECG/ECG_"+subject+".csv";
 
+disp("saving to "+path);
+
 writecell(C,path)% 出力
 
 
