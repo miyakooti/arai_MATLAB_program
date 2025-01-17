@@ -2,7 +2,7 @@
 ======================================================
  group1  group2  meandiff p-adj   lower  upper  reject
 ------------------------------------------------------
-boredom     flow   0.0209 0.9125 -0.0857 0.1274  False
-boredom overload   0.0858 0.2208 -0.0208 0.1923  False
-   flow overload   0.0649 0.4174 -0.0417 0.1714  False
+boredom     flow   0.0485 0.7598 -0.0987 0.1958  False
+boredom overload    0.102 0.3117 -0.0452 0.2493  False
+   flow overload   0.0535 0.7167 -0.0937 0.2007  False
 ------------------------------------------------------
