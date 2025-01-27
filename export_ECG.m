@@ -76,8 +76,8 @@ function folder_name = findFolderName(subject)
         folder_name = "28_chihiro";
     elseif contains(subject, "yuito")
         folder_name = "29_yuito";
-    elseif contains(subject, "nana")
-        folder_name = "30_nana";
+    elseif contains(subject, "maiko")
+        folder_name = "30_maiko";
     end
 end
 
